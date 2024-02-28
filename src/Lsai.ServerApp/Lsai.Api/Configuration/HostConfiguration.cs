@@ -11,7 +11,8 @@ public static partial class HostConfiguration
             .AddValidators()
             .AddAutoMapper()
             .AddPersistence()
-            .AddExposers();
+            .AddExposers()
+            .ApplyMigrations();
 
         return new(builder);
     }

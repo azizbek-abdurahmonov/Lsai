@@ -152,6 +152,16 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    private static WebApplicationBuilder ApplyMigrations(this WebApplicationBuilder builder)
+    {
+        using var scope = builder.Services.BuildServiceProvider().CreateScope();
+
+        using var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate();
+
+        return builder;
+    }
+
     private static WebApplication UseExposers(this WebApplication app)
     {
         app.MapControllers();
