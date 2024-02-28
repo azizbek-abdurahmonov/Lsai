@@ -1,0 +1,12 @@
+[
+  {
+    "Subject": "Hisobni tasdiqlash uchun kod keldi",
+    "Body": "Sizning tasdiqlash kodingiz: {{code}}",
+    "Type": 0
+  },
+  {
+    "Subject": "Parolni tiklash uchun tasdiqlash kod keldi",
+    "Body": "Parolni tiklash uchun tasdiqlash kodingiz: {{code}}",
+    "Type": 1
+  }
+]

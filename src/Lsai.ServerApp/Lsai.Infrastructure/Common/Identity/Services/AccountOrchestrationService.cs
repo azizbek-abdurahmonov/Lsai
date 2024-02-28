@@ -20,7 +20,9 @@ public class AccountOrchestrationService(
     IAccessTokenGeneratorService accessTokenGeneratorService,
     IVerificationCodeRepository verificationCodeRepository,
     IEmailSenderService emailSenderService,
-    IResetPasswordVerificationCodeRepository resetPasswordVerificationCodeRepository)
+    IResetPasswordVerificationCodeRepository resetPasswordVerificationCodeRepository,
+    IEmailTemplateService emailTemplateService,
+    IEmailOrchestrationService emailOrchestrationService)
     : IAccountOrchestrationService
 {
     public async ValueTask<User> SignUpAsync(SignUpDetails signUpDetails, CancellationToken cancellationToken = default)
@@ -144,18 +146,32 @@ public class AccountOrchestrationService(
         };
         await verificationCodeRepository.CreateAsync(verificationCode, cancellationToken: cancellationToken);
 
-        emailSenderService.SendEmail(
-            new EmailMessage
+        await emailOrchestrationService.SendAsync(
+            new Domain.Common.Notification.EmailRequest
             {
                 ReceiverEmail = user.Email,
-                Subject = NotificationConstants.VerificationCodeSubject,
-                Body = NotificationConstants.VerificationCodeBody,
+                EmailTemplate = await emailTemplateService.GetByTypeAsync(NotificationType.VerificationNotification),
+                Variables = new()
+                {
+                    {
+                        "{{code}}",$"{verificationCodeValue}"
+                    }
+                }
             },
-            new Dictionary<string, string>()
-            {
-                { "{{code}}", $"{verificationCodeValue}" }
-            }
-        );
+            cancellationToken);
+
+        //emailSenderService.SendEmail(
+        //    new EmailMessage
+        //    {
+        //        ReceiverEmail = user.Email,
+        //        Subject = NotificationConstants.VerificationCodeSubject,
+        //        Body = NotificationConstants.VerificationCodeBody,
+        //    },
+        //    new Dictionary<string, string>()
+        //    {
+        //        { "{{code}}", $"{verificationCodeValue}" }
+        //    }
+        //);
 
         return true;
     }
@@ -179,18 +195,31 @@ public class AccountOrchestrationService(
         };
         await resetPasswordVerificationCodeRepository.CreateAsync(resetPasswordVerificationCode, cancellationToken);
 
-        emailSenderService.SendEmail(
-            new EmailMessage
+        await emailOrchestrationService.SendAsync(
+            new Domain.Common.Notification.EmailRequest()
             {
                 ReceiverEmail = user.Email,
-                Subject = NotificationConstants.ResetPasswordCodeSubject,
-                Body = NotificationConstants.ResetPasswordCodeBody,
-            },
-            new Dictionary<string, string>()
-            {
-                { "{{code}}", $"{resetVerificationCodeValue}" }
-            }
-        );
+                EmailTemplate = await emailTemplateService.GetByTypeAsync(NotificationType.ResetPasswordNotification),
+                Variables = new Dictionary<string, string>()
+                {
+                    {
+                        "{{code}}",$"{resetVerificationCodeValue}"
+                    }
+                }
+            });
+
+        //emailSenderService.SendEmail(
+        //    new EmailMessage
+        //    {
+        //        ReceiverEmail = user.Email,
+        //        Subject = NotificationConstants.ResetPasswordCodeSubject,
+        //        Body = NotificationConstants.ResetPasswordCodeBody,
+        //    },
+        //    new Dictionary<string, string>()
+        //    {
+        //        { "{{code}}", $"{resetVerificationCodeValue}" }
+        //    }
+        //);
 
         return true;
     }

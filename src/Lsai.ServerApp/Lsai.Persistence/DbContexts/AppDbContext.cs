@@ -11,7 +11,9 @@ public class AppDbContext : DbContext
 
     public DbSet<VerificationCode> VerificationCodes => Set<VerificationCode>();
 
-    public DbSet<ResetPasswordVerificationCode> resetPasswordVerificationCodes => Set<ResetPasswordVerificationCode>();
+    public DbSet<ResetPasswordVerificationCode> ResetPasswordVerificationCodes => Set<ResetPasswordVerificationCode>();
+
+    public DbSet<EmailTemplate> EmailTemplates => Set<EmailTemplate>();
 
     public AppDbContext(DbContextOptions options) : base(options)
     {

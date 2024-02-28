@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Lsai.Api.CustomMiddlewares;
+using Lsai.Api.Data.SeedData;
 using Lsai.Application.Common.Identity.Services;
 using Lsai.Application.Common.Notification.Services;
 using Lsai.Domain.Common.Constants;
@@ -144,10 +145,13 @@ public static partial class HostConfiguration
 
         builder.Services
             .AddScoped<IResetPasswordVerificationCodeRepository, ResetPasswordVerificationCodeRepository>()
-            .AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
+            .AddScoped<IVerificationCodeRepository, VerificationCodeRepository>()
+            .AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
 
         builder.Services
-            .AddScoped<IEmailSenderService, EmailSenderService>();
+            .AddScoped<IEmailSenderService, EmailSenderService>()
+            .AddScoped<IEmailOrchestrationService, EmailOrchestrationService>()
+            .AddScoped<IEmailTemplateService, EmailTemplateService>();
 
         return builder;
     }
@@ -184,4 +188,15 @@ public static partial class HostConfiguration
 
         return app;
     }
+
+    private static async Task<WebApplication> InitializeSeedData(this WebApplication app)
+    {
+        var serviceProvider = app.Services.CreateScope().ServiceProvider;
+
+        await serviceProvider.InitializeSeedData();
+
+        return app;
+    }
+
+
 }

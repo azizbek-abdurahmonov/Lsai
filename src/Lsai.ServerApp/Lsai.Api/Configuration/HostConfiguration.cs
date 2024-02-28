@@ -14,16 +14,19 @@ public static partial class HostConfiguration
             .AddExposers()
             .ApplyMigrations();
 
+
         return new(builder);
     }
 
-    public static ValueTask<WebApplication> ConfigureAsync(this WebApplication app)
+    public static async ValueTask<WebApplication> ConfigureAsync(this WebApplication app)
     {
         app
             .UseDevTools()
             .UseExposers()
             .UseCustomMiddlewares();
 
-        return new(app);
+        await app.InitializeSeedData();
+
+        return app;
     }
 }
