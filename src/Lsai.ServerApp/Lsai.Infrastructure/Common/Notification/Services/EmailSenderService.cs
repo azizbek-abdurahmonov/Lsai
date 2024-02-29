@@ -9,7 +9,7 @@ namespace Lsai.Infrastructure.Common.Notification.Services;
 
 public class EmailSenderService(IOptions<SmtpSettings> smtpSettings) : IEmailSenderService
 {
-    public bool SendEmail(EmailMessage emailMessage, Dictionary<string, string> variables, bool isHtml = false)
+    public bool SendEmail(EmailMessage emailMessage, bool isHtml = false)
     {
         try
         {
@@ -18,7 +18,7 @@ public class EmailSenderService(IOptions<SmtpSettings> smtpSettings) : IEmailSen
 
             var mail = new MailMessage(senderEmail, emailMessage.ReceiverEmail);
             mail.Subject = emailMessage.Subject;
-            mail.Body = Render(emailMessage.Body, variables);
+            mail.Body = emailMessage.Body;
 
             var smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.Credentials = new NetworkCredential(senderEmail, senderPassword);
@@ -35,15 +35,5 @@ public class EmailSenderService(IOptions<SmtpSettings> smtpSettings) : IEmailSen
         {
             return false;
         }
-    }
-
-    private string Render(string text, Dictionary<string, string> variables)
-    {
-        foreach (var variable in variables)
-        {
-            text = text.Replace(variable.Key, variable.Value);
-        }
-
-        return text;
     }
 }

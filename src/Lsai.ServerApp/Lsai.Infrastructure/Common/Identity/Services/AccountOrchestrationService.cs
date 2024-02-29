@@ -1,15 +1,10 @@
 ﻿using Lsai.Application.Common.Identity.Services;
-using Lsai.Application.Common.Notification.Services;
 using Lsai.Domain.Common.Enums;
 using Lsai.Domain.Common.Exceptions;
 using Lsai.Domain.Common.Identity;
 using Lsai.Domain.Entities;
 using Lsai.Persistence.Repositories.Interfaces;
-using Lsai.Application.Common.Notification.Models;
-using Lsai.Domain.Common.Constants;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.Xml;
 
 namespace Lsai.Infrastructure.Common.Identity.Services;
 
@@ -19,9 +14,7 @@ public class AccountOrchestrationService(
     IPasswordHasherService passwordHasherService,
     IAccessTokenGeneratorService accessTokenGeneratorService,
     IVerificationCodeRepository verificationCodeRepository,
-    IEmailSenderService emailSenderService,
     IResetPasswordVerificationCodeRepository resetPasswordVerificationCodeRepository,
-    IEmailTemplateService emailTemplateService,
     IEmailOrchestrationService emailOrchestrationService)
     : IAccountOrchestrationService
 {
@@ -150,7 +143,7 @@ public class AccountOrchestrationService(
             new Domain.Common.Notification.EmailRequest
             {
                 ReceiverEmail = user.Email,
-                EmailTemplate = await emailTemplateService.GetByTypeAsync(NotificationType.VerificationNotification),
+                NotificationType = NotificationType.VerificationNotification,
                 Variables = new()
                 {
                     {
@@ -159,19 +152,6 @@ public class AccountOrchestrationService(
                 }
             },
             cancellationToken);
-
-        //emailSenderService.SendEmail(
-        //    new EmailMessage
-        //    {
-        //        ReceiverEmail = user.Email,
-        //        Subject = NotificationConstants.VerificationCodeSubject,
-        //        Body = NotificationConstants.VerificationCodeBody,
-        //    },
-        //    new Dictionary<string, string>()
-        //    {
-        //        { "{{code}}", $"{verificationCodeValue}" }
-        //    }
-        //);
 
         return true;
     }
@@ -199,7 +179,7 @@ public class AccountOrchestrationService(
             new Domain.Common.Notification.EmailRequest()
             {
                 ReceiverEmail = user.Email,
-                EmailTemplate = await emailTemplateService.GetByTypeAsync(NotificationType.ResetPasswordNotification),
+                NotificationType = NotificationType.ResetPasswordNotification,
                 Variables = new Dictionary<string, string>()
                 {
                     {
@@ -207,19 +187,6 @@ public class AccountOrchestrationService(
                     }
                 }
             });
-
-        //emailSenderService.SendEmail(
-        //    new EmailMessage
-        //    {
-        //        ReceiverEmail = user.Email,
-        //        Subject = NotificationConstants.ResetPasswordCodeSubject,
-        //        Body = NotificationConstants.ResetPasswordCodeBody,
-        //    },
-        //    new Dictionary<string, string>()
-        //    {
-        //        { "{{code}}", $"{resetVerificationCodeValue}" }
-        //    }
-        //);
 
         return true;
     }

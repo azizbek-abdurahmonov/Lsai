@@ -151,7 +151,8 @@ public static partial class HostConfiguration
         builder.Services
             .AddScoped<IEmailSenderService, EmailSenderService>()
             .AddScoped<IEmailOrchestrationService, EmailOrchestrationService>()
-            .AddScoped<IEmailTemplateService, EmailTemplateService>();
+            .AddScoped<IEmailTemplateService, EmailTemplateService>()
+            .AddScoped<IEmailRenderService, EmailRenderService>();
 
         return builder;
     }
@@ -197,6 +198,4 @@ public static partial class HostConfiguration
 
         return app;
     }
-
-
 }
