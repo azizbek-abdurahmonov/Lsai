@@ -167,6 +167,19 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    private static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors(options => options.AddPolicy("AllowSpecificOrigin", policy =>
+        {
+            policy
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        }));
+
+        return builder;
+    }
+
     private static WebApplication UseExposers(this WebApplication app)
     {
         app.MapControllers();
