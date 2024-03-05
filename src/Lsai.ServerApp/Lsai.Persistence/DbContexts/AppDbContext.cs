@@ -15,6 +15,10 @@ public class AppDbContext : DbContext
 
     public DbSet<EmailTemplate> EmailTemplates => Set<EmailTemplate>();
 
+    public DbSet<DocumentationModel> Documentations => Set<DocumentationModel>();
+
+    public DbSet<DocumentationPart> DocumentationParts => Set<DocumentationPart>();
+
     public AppDbContext(DbContextOptions options) : base(options)
     {
     }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Lsai.Persistence.EntityConfigurations;
 
-public class UserCredentialsConfigurations : IEntityTypeConfiguration<UserCredentials>
+public class UserCredentialsConfiguration : IEntityTypeConfiguration<UserCredentials>
 {
     public void Configure(EntityTypeBuilder<UserCredentials> builder)
     {

@@ -9,6 +9,7 @@ public static partial class HostConfiguration
             .AddCors()
             .AddIdentityInfrastructure()
             .AddNotificationInfrastructure()
+            .AddDocumentationInfrastructure()
             .AddValidators()
             .AddAutoMapper()
             .AddPersistence()

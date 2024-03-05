@@ -16,4 +16,6 @@ public class User : AuditableEntity
     public Role Role { get; set; } = Role.User;
 
     public virtual UserCredentials? Credentials { get; set; }
+
+    public virtual List<DocumentationModel> Documentations { get; set; } = new();
 }

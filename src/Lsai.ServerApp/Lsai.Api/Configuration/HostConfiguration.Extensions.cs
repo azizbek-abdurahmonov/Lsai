@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Lsai.Api.CustomMiddlewares;
 using Lsai.Api.Data.SeedData;
+using Lsai.Application.Common.Documentation.Services;
 using Lsai.Application.Common.Identity.Services;
 using Lsai.Application.Common.Notification.Services;
 using Lsai.Domain.Common.Constants;
+using Lsai.Infrastructure.Common.Documentation.Services;
 using Lsai.Infrastructure.Common.Identity.Services;
 using Lsai.Infrastructure.Common.Notification.Services;
 using Lsai.Infrastructure.Common.Settings;
@@ -153,6 +155,19 @@ public static partial class HostConfiguration
             .AddScoped<IEmailOrchestrationService, EmailOrchestrationService>()
             .AddScoped<IEmailTemplateService, EmailTemplateService>()
             .AddScoped<IEmailRenderService, EmailRenderService>();
+
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddDocumentationInfrastructure(this WebApplicationBuilder builder)
+    {
+        builder.Services
+            .AddScoped<IDocumentationRepository, DocumentationRepository>()
+            .AddScoped<IDocumentationPartRepository, DocumentationPartRepository>();
+
+        builder.Services
+            .AddScoped<IDocumentationService, DocumentationService>()
+            .AddScoped<IDocumentationPartService, DocumentationPartService>();
 
         return builder;
     }

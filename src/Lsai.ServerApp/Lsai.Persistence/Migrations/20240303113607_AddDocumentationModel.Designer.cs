@@ -3,6 +3,7 @@ using System;
 using Lsai.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lsai.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240303113607_AddDocumentationModel")]
+    partial class AddDocumentationModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,43 +64,6 @@ namespace Lsai.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Documentations");
-                });
-
-            modelBuilder.Entity("Lsai.Domain.Entities.DocumentationPart", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("DocumentationId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("ModifiedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocumentationId");
-
-                    b.ToTable("DocumentationParts");
                 });
 
             modelBuilder.Entity("Lsai.Domain.Entities.EmailTemplate", b =>
@@ -280,23 +246,12 @@ namespace Lsai.Persistence.Migrations
             modelBuilder.Entity("Lsai.Domain.Entities.DocumentationModel", b =>
                 {
                     b.HasOne("Lsai.Domain.Entities.User", "User")
-                        .WithMany("Documentations")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Lsai.Domain.Entities.DocumentationPart", b =>
-                {
-                    b.HasOne("Lsai.Domain.Entities.DocumentationModel", "Documentation")
-                        .WithMany("Parts")
-                        .HasForeignKey("DocumentationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Documentation");
                 });
 
             modelBuilder.Entity("Lsai.Domain.Entities.UserCredentials", b =>
@@ -310,16 +265,9 @@ namespace Lsai.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Lsai.Domain.Entities.DocumentationModel", b =>
-                {
-                    b.Navigation("Parts");
-                });
-
             modelBuilder.Entity("Lsai.Domain.Entities.User", b =>
                 {
                     b.Navigation("Credentials");
-
-                    b.Navigation("Documentations");
                 });
 #pragma warning restore 612, 618
         }

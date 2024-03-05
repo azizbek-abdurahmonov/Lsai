@@ -9,10 +9,10 @@ namespace Lsai.Api.Controllers;
 public class NotificationsController(IEmailTemplateService emailTemplateService) : ControllerBase
 {
     [HttpGet("templates")]
-    public async ValueTask<IActionResult> Get()
+    public ValueTask<IActionResult> Get()
     {
         var result = emailTemplateService.Get();
-        return result.Any() ? Ok(result) : BadRequest();
+        return new(result.Any() ? Ok(result) : BadRequest());
     }
 
     [HttpGet("template/{notificationType}")]
