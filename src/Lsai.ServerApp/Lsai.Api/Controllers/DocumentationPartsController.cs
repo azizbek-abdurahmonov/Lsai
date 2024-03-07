@@ -1,15 +1,20 @@
 ﻿using AutoMapper;
 using Lsai.Api.Dtos;
 using Lsai.Application.Common.Documentation.Services;
+using Lsai.Application.Common.QASection.Services;
 using Lsai.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Lsai.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class DocumentationPartsController(IDocumentationPartService documentationPartService, IMapper mapper) : ControllerBase
+public class DocumentationPartsController(
+    IDocumentationPartService documentationPartService,
+    IQuestionService questionService,
+    IMapper mapper) : ControllerBase
 {
     [Authorize, HttpPost]
     public async ValueTask<IActionResult> Create([FromBody] DocumentationPartDto documentationPartDto, CancellationToken cancellationToken)
@@ -30,6 +35,13 @@ public class DocumentationPartsController(IDocumentationPartService documentatio
     {
         var result = await documentationPartService.GetByIdAsync(id, cancellationToken: cancellationToken);
         return result is not null ? Ok(mapper.Map<DocumentationPartDto>(result)) : NotFound();
+    }
+
+    [HttpGet("{id:guid}/questions")]
+    public ValueTask<IActionResult> GetQuestions([FromRoute] Guid id)
+    {
+        var result = questionService.GetByDocumentationPartId(id);
+        return new(result is not null ? Ok(mapper.Map<List<QuestionDto>>(result)) : NoContent());
     }
 
     [Authorize, HttpPut]

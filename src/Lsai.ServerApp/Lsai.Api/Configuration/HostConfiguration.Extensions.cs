@@ -4,10 +4,12 @@ using Lsai.Api.Data.SeedData;
 using Lsai.Application.Common.Documentation.Services;
 using Lsai.Application.Common.Identity.Services;
 using Lsai.Application.Common.Notification.Services;
+using Lsai.Application.Common.QASection.Services;
 using Lsai.Domain.Common.Constants;
 using Lsai.Infrastructure.Common.Documentation.Services;
 using Lsai.Infrastructure.Common.Identity.Services;
 using Lsai.Infrastructure.Common.Notification.Services;
+using Lsai.Infrastructure.Common.QASection.Services;
 using Lsai.Infrastructure.Common.Settings;
 using Lsai.Persistence.DbContexts;
 using Lsai.Persistence.Interceptors;
@@ -168,6 +170,19 @@ public static partial class HostConfiguration
         builder.Services
             .AddScoped<IDocumentationService, DocumentationService>()
             .AddScoped<IDocumentationPartService, DocumentationPartService>();
+
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddQAInfrastructure(this WebApplicationBuilder builder)
+    {
+        builder.Services
+            .AddScoped<IQuestionRepository, QuestionRepository>()
+            .AddScoped<IQuestionOptionRepository, QuestionOptionRepository>();
+
+        builder.Services
+            .AddScoped<IQuestionService, QuestionService>()
+            .AddScoped<IQuestionOptionService, QuestionOptionService>();
 
         return builder;
     }

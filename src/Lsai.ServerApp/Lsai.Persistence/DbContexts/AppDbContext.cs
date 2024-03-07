@@ -19,6 +19,10 @@ public class AppDbContext : DbContext
 
     public DbSet<DocumentationPart> DocumentationParts => Set<DocumentationPart>();
 
+    public DbSet<QuestionModel> Questions => Set<QuestionModel>();
+
+    public DbSet<QuestionOption> QuestionOptions => Set<QuestionOption>();
+
     public AppDbContext(DbContextOptions options) : base(options)
     {
     }

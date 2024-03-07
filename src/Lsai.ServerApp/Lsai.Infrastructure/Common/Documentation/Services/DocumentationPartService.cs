@@ -37,4 +37,13 @@ public class DocumentationPartService
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
     }
+
+    public IQueryable<DocumentationPart> GetByDocumentationId(Guid id)
+    {
+        var documentationParts = documentationPartRepository
+            .Get()
+            .Where(documentationPart => documentationPart.DocumentationId == id);
+
+        return documentationParts;
+    }
 }

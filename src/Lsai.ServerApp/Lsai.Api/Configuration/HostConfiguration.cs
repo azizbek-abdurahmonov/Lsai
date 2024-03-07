@@ -10,6 +10,7 @@ public static partial class HostConfiguration
             .AddIdentityInfrastructure()
             .AddNotificationInfrastructure()
             .AddDocumentationInfrastructure()
+            .AddQAInfrastructure()
             .AddValidators()
             .AddAutoMapper()
             .AddPersistence()

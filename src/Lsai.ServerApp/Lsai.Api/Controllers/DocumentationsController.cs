@@ -11,7 +11,10 @@ namespace Lsai.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class DocumentationsController(IDocumentationService documentationService, IMapper mapper) : ControllerBase
+public class DocumentationsController(
+    IDocumentationService documentationService,
+    IDocumentationPartService documentationPartService,
+    IMapper mapper) : ControllerBase
 {
     [HttpPost, Authorize]
     public async ValueTask<IActionResult> Create([FromBody] DocumentationModelDto documentationModelDto, CancellationToken cancellationToken)
@@ -36,7 +39,14 @@ public class DocumentationsController(IDocumentationService documentationService
     {
         var result = documentationService.Get(paginationOptions: paginationOptions);
 
-        return new(result.Any() ? Ok(mapper.Map<DocumentationModelDto>(result)) : NoContent());
+        return new(result.Any() ? Ok(mapper.Map<List<DocumentationModelDto>>(result)) : NoContent());
+    }
+
+    [HttpGet("{id:guid}/parts")]
+    public ValueTask<IActionResult> GetDocumentationParts([FromRoute] Guid id)
+    {
+        var result = documentationPartService.GetByDocumentationId(id);
+        return new(result.Any() ? Ok(mapper.Map<List<DocumentationPartDto>>(result)) : NoContent());
     }
 
     [HttpPut, Authorize]
