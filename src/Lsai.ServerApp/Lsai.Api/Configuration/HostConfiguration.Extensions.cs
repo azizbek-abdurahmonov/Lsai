@@ -11,6 +11,7 @@ using Lsai.Infrastructure.Common.Identity.Services;
 using Lsai.Infrastructure.Common.Notification.Services;
 using Lsai.Infrastructure.Common.QASection.Services;
 using Lsai.Infrastructure.Common.Settings;
+using Lsai.Persistence.BackgroundServices;
 using Lsai.Persistence.DbContexts;
 using Lsai.Persistence.Interceptors;
 using Lsai.Persistence.Repositories;
@@ -150,13 +151,19 @@ public static partial class HostConfiguration
         builder.Services
             .AddScoped<IResetPasswordVerificationCodeRepository, ResetPasswordVerificationCodeRepository>()
             .AddScoped<IVerificationCodeRepository, VerificationCodeRepository>()
-            .AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
+            .AddScoped<IEmailTemplateRepository, EmailTemplateRepository>()
+            .AddScoped<IFutureMailRepository, FutureMailRepository>();
 
         builder.Services
             .AddScoped<IEmailSenderService, EmailSenderService>()
             .AddScoped<IEmailOrchestrationService, EmailOrchestrationService>()
             .AddScoped<IEmailTemplateService, EmailTemplateService>()
-            .AddScoped<IEmailRenderService, EmailRenderService>();
+            .AddScoped<IEmailRenderService, EmailRenderService>()
+            .AddScoped<IFutureMailService, FutureMailService>()
+            .AddScoped<IFutureMailOrchestrationService, FutureMailOrchestrationService>();
+
+        builder.Services
+            .AddHostedService<FutureMailBackgroundService>();   
 
         return builder;
     }
