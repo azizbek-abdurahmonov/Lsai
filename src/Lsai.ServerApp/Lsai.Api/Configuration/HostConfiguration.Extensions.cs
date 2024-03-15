@@ -185,11 +185,13 @@ public static partial class HostConfiguration
     {
         builder.Services
             .AddScoped<IQuestionRepository, QuestionRepository>()
-            .AddScoped<IQuestionOptionRepository, QuestionOptionRepository>();
+            .AddScoped<IQuestionOptionRepository, QuestionOptionRepository>()
+            .AddScoped<IUserAnswerRepository, UserAnswerRepository>();
 
         builder.Services
             .AddScoped<IQuestionService, QuestionService>()
-            .AddScoped<IQuestionOptionService, QuestionOptionService>();
+            .AddScoped<IQuestionOptionService, QuestionOptionService>()
+            .AddScoped<IUserAnswerService, UserAnswerService>();
 
         return builder;
     }

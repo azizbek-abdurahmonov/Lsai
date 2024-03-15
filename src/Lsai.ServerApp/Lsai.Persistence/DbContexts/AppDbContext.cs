@@ -23,6 +23,8 @@ public class AppDbContext : DbContext
 
     public DbSet<QuestionOption> QuestionOptions => Set<QuestionOption>();
 
+    public DbSet<UserAnswer> UserAnswers => Set<UserAnswer>();
+
     public DbSet<FutureMail> FutureMails => Set<FutureMail>();  
 
     public AppDbContext(DbContextOptions options) : base(options)

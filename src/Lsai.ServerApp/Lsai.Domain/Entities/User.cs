@@ -18,4 +18,6 @@ public class User : AuditableEntity
     public virtual UserCredentials? Credentials { get; set; }
 
     public virtual List<DocumentationModel> Documentations { get; set; } = new();
+
+    public virtual List<UserAnswer> Answers { get; set; } = new();
 }
