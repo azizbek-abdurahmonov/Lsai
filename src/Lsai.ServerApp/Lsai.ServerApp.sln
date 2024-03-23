@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lsai.Api", "Lsai.Api\Lsai.Api.csproj", "{BCFDFB72-5467-4A38-8601-84B13CBCE91A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lsai.Api", "Lsai.Api\Lsai.Api.csproj", "{BCFDFB72-5467-4A38-8601-84B13CBCE91A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lsai.Domain", "Lsai.Domain\Lsai.Domain.csproj", "{8C75EDBC-5711-40AE-80DD-AED428A883BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lsai.Domain", "Lsai.Domain\Lsai.Domain.csproj", "{8C75EDBC-5711-40AE-80DD-AED428A883BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lsai.Application", "Lsai.Application\Lsai.Application.csproj", "{0B306E8D-16BF-4973-8BE0-B92055ECF790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lsai.Application", "Lsai.Application\Lsai.Application.csproj", "{0B306E8D-16BF-4973-8BE0-B92055ECF790}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lsai.Infrastructure", "Lsai.Infrastructure\Lsai.Infrastructure.csproj", "{01300480-725B-4C3A-B996-93AF4CC26C04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lsai.Infrastructure", "Lsai.Infrastructure\Lsai.Infrastructure.csproj", "{01300480-725B-4C3A-B996-93AF4CC26C04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lsai.Persistence", "Lsai.Persistence\Lsai.Persistence.csproj", "{D11D508D-40B9-46B4-A965-97B1EA2641E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lsai.Persistence", "Lsai.Persistence\Lsai.Persistence.csproj", "{D11D508D-40B9-46B4-A965-97B1EA2641E8}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{30BE59A3-F88A-4B39-B8EF-53563DD48707}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D11D508D-40B9-46B4-A965-97B1EA2641E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D11D508D-40B9-46B4-A965-97B1EA2641E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D11D508D-40B9-46B4-A965-97B1EA2641E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30BE59A3-F88A-4B39-B8EF-53563DD48707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30BE59A3-F88A-4B39-B8EF-53563DD48707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30BE59A3-F88A-4B39-B8EF-53563DD48707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30BE59A3-F88A-4B39-B8EF-53563DD48707}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

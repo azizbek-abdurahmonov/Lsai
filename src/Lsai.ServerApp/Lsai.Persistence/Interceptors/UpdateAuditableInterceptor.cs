@@ -25,7 +25,9 @@ public class UpdateAuditableInterceptor : SaveChangesInterceptor
         {
             if (entityEntry.State == EntityState.Added)
             {
-                entityEntry.Property(nameof(AuditableEntity.Id)).CurrentValue = Guid.NewGuid();
+                if (entityEntry.Entity.Id == Guid.Empty)
+                    entityEntry.Property(nameof(AuditableEntity.Id)).CurrentValue = Guid.NewGuid();
+                
                 entityEntry.Property(nameof(AuditableEntity.CreatedTime)).CurrentValue = DateTime.UtcNow;
             }
 

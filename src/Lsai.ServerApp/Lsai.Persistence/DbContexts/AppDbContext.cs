@@ -27,6 +27,10 @@ public class AppDbContext : DbContext
 
     public DbSet<FutureMail> FutureMails => Set<FutureMail>();  
 
+    public DbSet<DocumentationLike> DocumentationLikes => Set<DocumentationLike>();
+
+    public DbSet<Comment> Comments => Set<Comment>();
+
     public AppDbContext(DbContextOptions options) : base(options)
     {
     }

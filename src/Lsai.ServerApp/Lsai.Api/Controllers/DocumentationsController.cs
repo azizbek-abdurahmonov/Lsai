@@ -14,6 +14,8 @@ namespace Lsai.Api.Controllers;
 public class DocumentationsController(
     IDocumentationService documentationService,
     IDocumentationPartService documentationPartService,
+    IDocumentationLikeService documentationLikeService,
+    ICommentService commentService,
     IMapper mapper) : ControllerBase
 {
     [HttpPost, Authorize]
@@ -47,6 +49,42 @@ public class DocumentationsController(
     {
         var result = documentationPartService.GetByDocumentationId(id);
         return new(result.Any() ? Ok(mapper.Map<List<DocumentationPartDto>>(result)) : NoContent());
+    }
+
+    [HttpGet("{documentationId:guid}/likesCount")]
+    public async ValueTask<IActionResult> GetLikesCount([FromRoute] Guid documentationId)
+    {
+        var result = await documentationLikeService.GetLikeCountByIdAsync(documentationId);
+
+        return Ok(result);
+    }
+
+    [HttpGet("{documentationId:guid}/likes")]
+    public ValueTask<IActionResult> GetLikes([FromRoute] Guid documentationId, [FromQuery] PaginationOptions paginationOptions)
+    {
+        var result = documentationLikeService.GetDocumentationLikes(documentationId, paginationOptions);
+
+        return new(result.Any()
+            ? Ok(mapper.Map<ICollection<DocumentationLikeDto>>(result))
+            : NoContent());
+    }
+
+    [HttpGet("{documentationId:guid}/commentsCount")]
+    public async ValueTask<IActionResult> GetCommentsCount([FromRoute] Guid documentationId, CancellationToken cancellationToken)
+    {
+        var result = await commentService.GetCommentsCountByDocumentationIdAsync(documentationId, cancellationToken);
+        
+        return Ok(result);
+    }
+
+    [HttpGet("{documentationId:guid}/comments")]
+    public ValueTask<IActionResult> GetComments([FromRoute] Guid documentationId, [FromQuery]PaginationOptions paginationOptions)
+    {
+        var result = commentService.GetCommentsByDocumentationId(documentationId, paginationOptions);
+
+        return new(result.Any()
+            ? Ok(mapper.Map<ICollection<CommentDto>>(result))
+            : NoContent());
     }
 
     [HttpPut, Authorize]

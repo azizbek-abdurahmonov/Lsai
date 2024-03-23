@@ -20,4 +20,8 @@ public class User : AuditableEntity
     public virtual List<DocumentationModel> Documentations { get; set; } = new();
 
     public virtual List<UserAnswer> Answers { get; set; } = new();
+
+    public virtual List<Comment> Comments { get; set;} = new();
+
+    public virtual List<DocumentationLike> Likes { get; set; } = new();
 }

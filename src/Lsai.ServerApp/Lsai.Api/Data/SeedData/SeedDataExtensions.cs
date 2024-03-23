@@ -1,6 +1,5 @@
 ﻿using Lsai.Domain.Entities;
 using Lsai.Persistence.DbContexts;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -16,6 +15,12 @@ public static class SeedDataExtensions
         if (!await dbContext.EmailTemplates.AnyAsync())
             await SeedEmailTemplatesAsync(dbContext, webHostEnvironment);
 
+        if (!await dbContext.Users.AnyAsync())
+            await SeedUsersAsync(dbContext, webHostEnvironment);
+
+        if (!await dbContext.UserCredentials.AnyAsync())
+            await SeedUserCredentialsAsync(dbContext, webHostEnvironment);
+
         if (dbContext.ChangeTracker.HasChanges())
             await dbContext.SaveChangesAsync();
     }
@@ -24,11 +29,35 @@ public static class SeedDataExtensions
     {
         var webHost = webHostEnvironment.WebRootPath;
         var filePath = Path.Combine(webHost, "Data", "SeedData", "EmailTemplates.json");
-   
+
         var emailTemplates = JsonSerializer.Deserialize<List<EmailTemplate>>(
             File.ReadAllText(filePath) ?? throw new InvalidOperationException());
 
         await dbContext.EmailTemplates.AddRangeAsync(emailTemplates!);
+        await dbContext.SaveChangesAsync();
+    }
+
+    private static async ValueTask SeedUsersAsync(this AppDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+    {
+        var webHost = webHostEnvironment.WebRootPath;
+        var filePath = Path.Combine(webHost, "Data", "SeedData", "Users.json");
+
+        var users = JsonSerializer.Deserialize<List<User>>(
+            File.ReadAllText(filePath) ?? throw new InvalidOperationException());
+
+        await dbContext.Users.AddRangeAsync(users ?? throw new InvalidOperationException());
+        await dbContext.SaveChangesAsync();
+    }
+
+    private static async ValueTask SeedUserCredentialsAsync(this AppDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+    {
+        var webHost = webHostEnvironment.WebRootPath;
+        var filePath = Path.Combine(webHost, "Data", "SeedData", "UserCredentials.json");
+
+        var userCredentials = JsonSerializer.Deserialize<List<UserCredentials>>(
+            File.ReadAllText(filePath) ?? throw new InvalidOperationException());
+
+        await dbContext.UserCredentials.AddRangeAsync(userCredentials ?? throw new InvalidOperationException());
         await dbContext.SaveChangesAsync();
     }
 }

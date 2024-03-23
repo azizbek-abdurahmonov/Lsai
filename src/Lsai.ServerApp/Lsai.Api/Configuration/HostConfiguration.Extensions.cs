@@ -172,11 +172,15 @@ public static partial class HostConfiguration
     {
         builder.Services
             .AddScoped<IDocumentationRepository, DocumentationRepository>()
-            .AddScoped<IDocumentationPartRepository, DocumentationPartRepository>();
+            .AddScoped<IDocumentationPartRepository, DocumentationPartRepository>()
+            .AddScoped<IDocumentationLikeRepository, DocumentationLikeRepository>()
+            .AddScoped<ICommentRepository, CommentRepository>();
 
         builder.Services
             .AddScoped<IDocumentationService, DocumentationService>()
-            .AddScoped<IDocumentationPartService, DocumentationPartService>();
+            .AddScoped<IDocumentationPartService, DocumentationPartService>()
+            .AddScoped<IDocumentationLikeService, DocumentationLikeService>()
+            .AddScoped<ICommentService, CommentService>();
 
         return builder;
     }

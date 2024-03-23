@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  lsai.api:
+    image: ${DOCKER_REGISTRY-}lsaiapi
+    container_name: lsai.api
+    build:
+      context: .
+      dockerfile: Lsai.Api/Dockerfile
+    ports:
+     - "7000:7000"
+     - "7001:7001"
+
+  lsai.database:
+    image: postgres:latest
+    container_name: lsai.database
+    environment:
+      - POSTGRES_DB=LsaiDb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/lsai-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+        

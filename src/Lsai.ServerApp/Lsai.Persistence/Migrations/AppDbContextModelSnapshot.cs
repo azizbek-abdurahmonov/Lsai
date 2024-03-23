@@ -22,6 +22,80 @@ namespace Lsai.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Lsai.Domain.Entities.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DocumentationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModifiedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Lsai.Domain.Entities.DocumentationLike", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DocumentationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModifiedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DocumentationLikes");
+                });
+
             modelBuilder.Entity("Lsai.Domain.Entities.DocumentationModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -417,6 +491,44 @@ namespace Lsai.Persistence.Migrations
                     b.ToTable("VerificationCodes");
                 });
 
+            modelBuilder.Entity("Lsai.Domain.Entities.Comment", b =>
+                {
+                    b.HasOne("Lsai.Domain.Entities.DocumentationModel", "DocumentationModel")
+                        .WithMany("Comments")
+                        .HasForeignKey("DocumentationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lsai.Domain.Entities.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocumentationModel");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Lsai.Domain.Entities.DocumentationLike", b =>
+                {
+                    b.HasOne("Lsai.Domain.Entities.DocumentationModel", "Documentation")
+                        .WithMany("Likes")
+                        .HasForeignKey("DocumentationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lsai.Domain.Entities.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Documentation");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Lsai.Domain.Entities.DocumentationModel", b =>
                 {
                     b.HasOne("Lsai.Domain.Entities.User", "User")
@@ -482,6 +594,10 @@ namespace Lsai.Persistence.Migrations
 
             modelBuilder.Entity("Lsai.Domain.Entities.DocumentationModel", b =>
                 {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+
                     b.Navigation("Parts");
                 });
 
@@ -494,9 +610,13 @@ namespace Lsai.Persistence.Migrations
                 {
                     b.Navigation("Answers");
 
+                    b.Navigation("Comments");
+
                     b.Navigation("Credentials");
 
                     b.Navigation("Documentations");
+
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }
